@@ -1,1 +1,1 @@
-# family_tree
+# This is an excercise to practice Object-Oriented Programming with Python
