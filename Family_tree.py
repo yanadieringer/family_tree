@@ -1,4 +1,3 @@
-class Member():
 
         """
         Comments from Gil (10/08)
@@ -9,6 +8,8 @@ class Member():
         related to a member. Having functionality that prompts are user makes it know about the user interface, which is not
         one of its responsibilities.
         """
+
+class Member():
         def __init__(self):
             self.name = None
             self.last_name = None
@@ -74,6 +75,10 @@ Albert = get_member("Albert", "Dieringer", "Male", Yana, "Ambrose", None, None)
 Margaret = get_member("Margaret", "Dieringer", "Female", "Fanie", "Albert_Sr_1", "Alan", "Ambrose")
 Alan = get_member("Alan", "Dieringer", "Male", "Margaret_Sr", "Albert_Sr_2", "Margaret", "Ambrose")
 Ambrose = get_member("Ambrose", "Dieringer", "Male", Margaret, Alan, Yana, Albert)
+
+#This is to test how each member gets printed out given that some of the attributes are strings and some are instances of Member class.
+
+print (Ambrose)
 
 print (Yana)
 
