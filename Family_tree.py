@@ -1,5 +1,14 @@
 class Member():
 
+        """
+        Comments from Gil (10/08)
+        While it is very convenient to have the object ask the user for input at the moment of creation, it also limits
+        the reusability of the class.  For example, this class could not be used for an application that reads family members
+        from a database or receives them from a web UI or API.
+        This ties to the single responsibility principle.  The Member class is mean to encapsulate everything and only things
+        related to a member. Having functionality that prompts are user makes it know about the user interface, which is not
+        one of its responsibilities.
+        """
         def __init__(self):
             self.name = input("Enter first name: ")
             self.gender = input("Enter your gender: ")
