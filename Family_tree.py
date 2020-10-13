@@ -1,65 +1,32 @@
-
-        """
-        Comments from Gil (10/08)
-        While it is very convenient to have the object ask the user for input at the moment of creation, it also limits
-        the reusability of the class.  For example, this class could not be used for an application that reads family members
-        from a database or receives them from a web UI or API.
-        This ties to the single responsibility principle.  The Member class is mean to encapsulate everything and only things
-        related to a member. Having functionality that prompts are user makes it know about the user interface, which is not
-        one of its responsibilities.
-        """
-
 class Member():
+
         def __init__(self):
+            self.index = None
             self.name = None
             self.last_name = None
             self.gender = None
             self.mother = None
             self.father = None
-            self.spouse = None
-            self.children = None
-        
+            self.spouse = None     
+            self.children = []    
     
-        def __str__(self):
-            mother = 0
-            if type(self.mother) == str:
-                mother = self.mother
-            elif isinstance(self.mother, Member):
-                mother = (self.mother).name
-                
-            father = 0
-            if type(self.father) == str:
-                father = self.father
-            elif isinstance(self.father, Member):
-                father = (self.father).name
+        def __str__(self): 
             
-            spouse = 0
-            if type(self.spouse) == str:
-                spouse = self.spouse
-            elif isinstance(self.spouse, Member):
-                spouse = (self.spouse).name
-            
-#         Not sure how to print out children's names for both options, when it is a string and when it is an instance of a class. 
-#             children = []
-#             for i in self.children:
-#                 if type(i) == str:
-#                     i = i
-#                     children = (', '. join(str(x) for x in self.children) 
-#                 if isinstance(self.children, Member):           
-#                         i = str((self.children).name)
-#                         children.append [i]
-#                         children = (', '. join(str(x) for x in children)   
+            return (f"""{self.name}'s record includes: 
+            Name: {self.name} 
+            Last_name: {self.last_name} 
+            Gender: {self.gender} 
+            Mother: {(self.mother).name} 
+            Father: {(self.father).name} 
+            Spouse: {(self.spouse).name} 
+            Children: {self.children}""") 
+        
+        def add_child(self,member):
+            if self.children == None:
+                self.children = []
+            self.children.append(member)
 
-            children = 0
-            if type(self.children) == str:
-                children = self.children
-            elif isinstance(self.children, Member):
-                children = (self.children).name
-                
-                
-            return (f"{self.name}'s record includes: \nName: {self.name} \nLast_name: {self.last_name} \nGender: {self.gender} \nMother: {mother} \nFather: {father} \nSpouse: {spouse} \nChildren: {children}") 
-
-def get_member(name, last_name, gender, mother, father, spouse, children):
+def create_member(index,name, last_name, gender, mother, father, spouse, children):
     member = Member()
     member.name = name
     member.last_name = last_name
@@ -70,17 +37,96 @@ def get_member(name, last_name, gender, mother, father, spouse, children):
     member.children = children
     return member 
 
-Yana = get_member("Yana", "Dieringer", "Female", "Lubov", "Bogdan", "Ambrose", "Albert") 
-Albert = get_member("Albert", "Dieringer", "Male", Yana, "Ambrose", None, None)
-Margaret = get_member("Margaret", "Dieringer", "Female", "Fanie", "Albert_Sr_1", "Alan", "Ambrose")
-Alan = get_member("Alan", "Dieringer", "Male", "Margaret_Sr", "Albert_Sr_2", "Margaret", "Ambrose")
-Ambrose = get_member("Ambrose", "Dieringer", "Male", Margaret, Alan, Yana, Albert)
+members = []
 
-#This is to test how each member gets printed out given that some of the attributes are strings and some are instances of Member class.
+def add_to_members(member):
+    members.append(member)
 
-print (Ambrose)
 
-print (Yana)
 
-print (Margaret)
+def create_records():
+    records = {} 
 
+    for member in members:
+        record = []
+        if member.father == None:
+            record.append(member.father)
+        if member.mother == None:
+            record.append(member.mother)
+        else: 
+            record.append(member.father.name)
+            record.append(member.mother.name)  
+        key = member.name
+        records[key] = record 
+    return (records)
+
+
+def print_records(member):
+    records = create_records()
+    member_list = []
+    member = member.name
+    member_list.append(member)
+
+    for each in records:
+        index = 0
+        while member != None: 
+            father = records[member][0]
+            mother = records[member][1]
+            member_list.append (father)
+            member_list.append (mother)
+            index += 1
+            member = member_list[index]
+
+    print (member_list [0])
+    x = 1
+    y = 3
+    i = 1
+    for each in member_list:
+        if each == None:
+            break
+        else:
+            l = member_list[x:y]
+            print (*l, sep = "   ")
+            x = y
+            y = (y*2)+1
+            
+
+
+Feder = create_member("10000001", "Fedor", "Fevralyov", "Male", None, None, None, None)
+Lukeria = create_member("10000002", "Lukeria", "Fevralyov", "Female", None, None, Feder, None)
+Maria = create_member("10000003", "Maria", "Grinyenkova", "Female", None, None, None, None)
+Grigoriy = create_member("10000004", "Grigoriy", "Grinyenkov", "Male", None, None, Maria, None)
+Lubov = create_member("10000005","Lubov","Grinyenkova", "Female", Lukeria, Feder, None, None)
+Bogdan = create_member("10000006", "Bogdan", "Grinyenkov", "Male", Maria, Grigoriy, Lubov, None)
+Roman = create_member("10000007","Roman", "Grinyenkov", "Male", Lubov, Bogdan, None,  None)
+Yana = create_member("10000008","Yana", "Dieringer", "Female", Lubov, Bogdan, None,  None) 
+Fanie = create_member("10000009","Fanie", "Khan", "Female", None, None, None,  None)
+Albert_Sr_1 = create_member("10000010","Albert_Sr_1", "Khan", "Male", None, None, Fanie,  None)
+Margaret_Sr = create_member("10000011","Margaret_Sr", "Dieringer", "Female", None, None, None,  None)
+Albert_Sr_2 = create_member("10000012","Albert_Sr_2", "Dieringer", "Male", None, None, Margaret_Sr,  None)
+Margaret = create_member("10000013","Margaret_JR", "Dieringer", "Female", Fanie, Albert_Sr_1, None, None)
+Alan = create_member("10000014","Alan", "Dieringer", "Male", Margaret_Sr, Albert_Sr_2, Margaret,  None)
+Ambrose = create_member("10000015","Ambrose", "Dieringer", "Male", Margaret, Alan, Yana, None)
+Albert = create_member("10000016","Albert", "Dieringer", "Male", Yana, Ambrose, None, None)
+
+
+add_to_members(Feder)
+add_to_members(Lukeria)
+add_to_members(Maria)
+add_to_members(Grigoriy)
+add_to_members(Lubov)
+add_to_members(Bogdan)
+add_to_members(Roman)
+add_to_members(Yana)
+add_to_members(Fanie)
+add_to_members(Albert_Sr_1)
+add_to_members(Margaret_Sr)
+add_to_members(Albert_Sr_2)
+add_to_members(Margaret)
+add_to_members(Alan)
+add_to_members(Ambrose)
+add_to_members(Albert)
+
+
+
+print_records(Albert)
