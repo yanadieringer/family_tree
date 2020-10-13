@@ -63,29 +63,29 @@ def create_records():
 
 def print_records(member):
     records = create_records()
-    member_list = []
+    sequence_list = []
     member = member.name
-    member_list.append(member)
+    sequence_list.append(member)
 
     for each in records:
         index = 0
         while member != None: 
             father = records[member][0]
             mother = records[member][1]
-            member_list.append (father)
-            member_list.append (mother)
+            sequence_list.append (father)
+            sequence_list.append (mother)
             index += 1
-            member = member_list[index]
+            member = sequence_list[index]
 
-    print (member_list [0])
+    print (sequence_list [0])
     x = 1
     y = 3
     i = 1
-    for each in member_list:
+    for each in sequence_list:
         if each == None:
             break
         else:
-            l = member_list[x:y]
+            l = sequence_list[x:y]
             print (*l, sep = "   ")
             x = y
             y = (y*2)+1
@@ -129,4 +129,4 @@ add_to_members(Albert)
 
 
 
-print_records(Albert)
+print_records(Yana)
