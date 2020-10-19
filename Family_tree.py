@@ -12,121 +12,121 @@ class Member():
     
         def __str__(self): 
             
-            return (f"""{self.name}'s record includes: 
-            Name: {self.name} 
-            Last_name: {self.last_name} 
-            Gender: {self.gender} 
-            Mother: {(self.mother).name} 
-            Father: {(self.father).name} 
-            Spouse: {(self.spouse).name} 
-            Children: {self.children}""") 
+            return (self.name)
         
         def add_child(self,member):
             if self.children == None:
                 self.children = []
             self.children.append(member)
 
-def create_member(index,name, last_name, gender, mother, father, spouse, children):
-    member = Member()
-    member.name = name
-    member.last_name = last_name
-    member.gender = gender
-    member.mother = mother
-    member.father = father
-    member.spouse = spouse
-    member.children = children
-    return member 
-
-members = []
-
-def add_to_members(member):
-    members.append(member)
 
 
+def create_member(member, file, code):
+    import csv
+    data = open (file, encoding = code)
+    csv_data = csv.reader (data)
+    data_lines = list(csv_data)
 
-def create_records():
-    records = {} 
-
-    for member in members:
-        record = []
-        if member.father == None:
-            record.append(member.father)
-        if member.mother == None:
-            record.append(member.mother)
-        else: 
-            record.append(member.father.name)
-            record.append(member.mother.name)  
-        key = member.name
-        records[key] = record 
-    return (records)
-
-
-def print_records(member):
-    records = create_records()
-    sequence_list = []
-    member = member.name
-    sequence_list.append(member)
-
-    for each in records:
-        index = 0
-        while member != None: 
-            father = records[member][0]
-            mother = records[member][1]
-            sequence_list.append (father)
-            sequence_list.append (mother)
-            index += 1
-            member = sequence_list[index]
-
-    print (sequence_list [0])
-    x = 1
-    y = 3
-    i = 1
-    for each in sequence_list:
-        if each == None:
-            break
-        else:
-            l = sequence_list[x:y]
-            print (*l, sep = "   ")
-            x = y
-            y = (y*2)+1
-            
+    for line in data_lines[1:]:  
+        if member == line [0]: 
+            member = Member()
+            member.name = line[1]
+            member.index = line[2]
+            member.last_name = line[3]
+            member.gender = line[4]
+            member.mother = line[5]
+            member.father = line[6]
+            member.spouse = line[7]
+            member.children = line[8]
+    return (member)
 
 
-Feder = create_member("10000001", "Fedor", "Fevralyov", "Male", None, None, None, None)
-Lukeria = create_member("10000002", "Lukeria", "Fevralyov", "Female", None, None, Feder, None)
-Maria = create_member("10000003", "Maria", "Grinyenkova", "Female", None, None, None, None)
-Grigoriy = create_member("10000004", "Grigoriy", "Grinyenkov", "Male", None, None, Maria, None)
-Lubov = create_member("10000005","Lubov","Grinyenkova", "Female", Lukeria, Feder, None, None)
-Bogdan = create_member("10000006", "Bogdan", "Grinyenkov", "Male", Maria, Grigoriy, Lubov, None)
-Roman = create_member("10000007","Roman", "Grinyenkov", "Male", Lubov, Bogdan, None,  None)
-Yana = create_member("10000008","Yana", "Dieringer", "Female", Lubov, Bogdan, None,  None) 
-Fanie = create_member("10000009","Fanie", "Khan", "Female", None, None, None,  None)
-Albert_Sr_1 = create_member("10000010","Albert_Sr_1", "Khan", "Male", None, None, Fanie,  None)
-Margaret_Sr = create_member("10000011","Margaret_Sr", "Dieringer", "Female", None, None, None,  None)
-Albert_Sr_2 = create_member("10000012","Albert_Sr_2", "Dieringer", "Male", None, None, Margaret_Sr,  None)
-Margaret = create_member("10000013","Margaret_JR", "Dieringer", "Female", Fanie, Albert_Sr_1, None, None)
-Alan = create_member("10000014","Alan", "Dieringer", "Male", Margaret_Sr, Albert_Sr_2, Margaret,  None)
-Ambrose = create_member("10000015","Ambrose", "Dieringer", "Male", Margaret, Alan, Yana, None)
-Albert = create_member("10000016","Albert", "Dieringer", "Male", Yana, Ambrose, None, None)
+def printInorder(member, indentation):
+    member.left = member.mother
+    member.right = member.father
 
+    if member.left=="Null" or member.right =="Null":
+        print ("                                      " + f"{member}")
+        return
+    else: 
+        indentation += "        "
+        # First recur on left child 
+        printInorder(member.left, indentation) 
 
-add_to_members(Feder)
-add_to_members(Lukeria)
-add_to_members(Maria)
-add_to_members(Grigoriy)
-add_to_members(Lubov)
-add_to_members(Bogdan)
-add_to_members(Roman)
-add_to_members(Yana)
-add_to_members(Fanie)
-add_to_members(Albert_Sr_1)
-add_to_members(Margaret_Sr)
-add_to_members(Albert_Sr_2)
-add_to_members(Margaret)
-add_to_members(Alan)
-add_to_members(Ambrose)
-add_to_members(Albert)
+        # then print the data of node 
+        print ("")
+        print(indentation + f"{member}"),
+
+        # now recur on right child 
+        printInorder(member.right, indentation) 
 
 
 
-print_records(Yana)
+
+def printPostorder(member, indentation): 
+    member.left = member.mother
+    member.right = member.father
+
+    if member.left== None or member.right ==None:
+        print ("                                      " + f"{member}")
+        return
+
+    else:
+
+        indentation += "        "
+        # First recur on left child 
+        printPostorder(member.left, indentation) 
+  
+        # the recur on right child 
+        printPostorder(member.right, indentation) 
+  
+        # now print the data of node 
+        print ("")
+        print(indentation + f"{member}"),
+
+Feder = create_member("Feder", "/Users/ef5j/git_repo/Members_Information.csv", "utf-8-sig")
+Lukeria = create_member("Lukeria", "/Users/ef5j/git_repo/Members_Information.csv", "utf-8-sig")
+Maria = create_member("Maria", "/Users/ef5j/git_repo/Members_Information.csv", "utf-8-sig")
+Grigoriy = create_member("Grigoriy", "/Users/ef5j/git_repo/Members_Information.csv", "utf-8-sig")
+Lubov = create_member("Lubov", "/Users/ef5j/git_repo/Members_Information.csv", "utf-8-sig")
+Bogdan = create_member("Bogdan", "/Users/ef5j/git_repo/Members_Information.csv", "utf-8-sig")
+Roman = create_member("Roman", "/Users/ef5j/git_repo/Members_Information.csv", "utf-8-sig")
+Yana = create_member("Yana", "/Users/ef5j/git_repo/Members_Information.csv", "utf-8-sig")
+Fanie = create_member("Fanie", "/Users/ef5j/git_repo/Members_Information.csv", "utf-8-sig")
+Albert1 = create_member("Albert1", "/Users/ef5j/git_repo/Members_Information.csv", "utf-8-sig")
+Margaret1 = create_member("Margaret1", "/Users/ef5j/git_repo/Members_Information.csv", "utf-8-sig")
+Albert2 = create_member("Albert2", "/Users/ef5j/git_repo/Members_Information.csv", "utf-8-sig")
+Margaret = create_member("Margaret", "/Users/ef5j/git_repo/Members_Information.csv", "utf-8-sig")
+Alan = create_member("Alan", "/Users/ef5j/git_repo/Members_Information.csv", "utf-8-sig")
+Ambrose = create_member("Ambrose", "/Users/ef5j/git_repo/Members_Information.csv", "utf-8-sig")
+Albert = create_member("Albert", "/Users/ef5j/git_repo/Members_Information.csv", "utf-8-sig")
+
+Lukeria.spouse = Feder
+Feder.spouse = Lukeria
+Grigoriy.spouse = Maria
+Maria.spouse = Grigoriy
+Lubov.mother = Lukeria
+Lubov.father = Feder
+Bogdan.mother = Maria
+Bogdan.father = Grigoriy
+Bogdan.spouse = Lubov
+Lubov.spouse = Bogdan
+Roman.father = Bogdan
+Roman.mother = Lubov
+Yana.father = Bogdan
+Yana.mother = Lubov
+Albert1.spouse = Fanie
+Fanie.spouse = Albert1
+Margaret1.spouse = Albert2
+Alan.mother = Margaret1
+Alan.father = Albert2
+Margaret.mother = Fanie
+Margaret.father = Albert1
+Alan.spouse = Margaret
+Ambrose.mother = Margaret
+Ambrose.father = Alan
+Ambrose.spouse = Yana
+Yana.spouse = Ambrose
+Albert.mother = Yana
+Albert.father = Ambrose
+printInorder(Albert, " ")
