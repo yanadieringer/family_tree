@@ -82,7 +82,7 @@ def print_family(root, indentation):
         print_family(root.right, indentation) 
         
 
-# find any member in the tree
+# find any member in the tree and print his/her family tree
 
 def find_member (root, name):
     
@@ -99,7 +99,7 @@ def find_member (root, name):
     find_member(root.right, name)
 
 
-#Test
+#Test to check functions (download Members_Information.csv to local machine)
 read_file ("/Users/ef5j/git_repo/Members_Information.csv", "utf-8-sig")
 
 print_family(root, "")
